@@ -8,6 +8,7 @@ class  Trade:
     # the class has an attribute for the name of both teams
     # and a list of assets which they traded
     def __init__(self, team1, team2, team1_assets, team2_assets):
+        self.__tradeid = None
         self.__team1 = team1
         self.__team2 = team2
         self.__team1_assets = team1_assets
@@ -31,6 +32,9 @@ class  Trade:
 
     def setDate(self, date):
         self.__date = date
+
+    def setTradeID(self, tradeid):
+        self.__tradeid = tradeid
 
     def __str__(self):
         return self.__team1 + " - " + self.__team2
@@ -115,7 +119,7 @@ if __name__ == '__main__':
     days = contents.find_all("li")
 
     trades = []
-    for day in days:
+    for idx, day in enumerate(days):
         # find the actual date
         date = day.find("span").contents[0]
         # all transactions of a day are in <p>-Tags stored
@@ -134,6 +138,8 @@ if __name__ == '__main__':
                 else:
                     # set the date of the trade
                     trade.setDate(date)
+                    # set the id of the trade
+                    trade.setTradeID("{}.{}".format(idx+1., trade.getDate().split(",")[-1]))
                     trades.append(trade)
 
     # create a json string of our scraped data
