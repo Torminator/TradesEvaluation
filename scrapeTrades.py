@@ -108,7 +108,7 @@ def parseAssets(array):
 if __name__ == '__main__':
 
     # use requests to get the website
-    r = requests.get("http://www.basketball-reference.com/leagues/NBA_2017_transactions.html")
+    r = requests.get("http://www.basketball-reference.com/leagues/NBA_2016_transactions.html")
 
     # use BeautifulSoup to parse the html
     soup = BeautifulSoup(r.content, "html5lib")
@@ -119,7 +119,8 @@ if __name__ == '__main__':
     days = contents.find_all("li")
 
     trades = []
-    for idx, day in enumerate(days):
+    idx = 1
+    for day in days:
         # find the actual date
         date = day.find("span").contents[0]
         # all transactions of a day are in <p>-Tags stored
@@ -128,6 +129,10 @@ if __name__ == '__main__':
             # if transaction consists of too few elements
             # it cannot be a trade
             if len(deal.contents) < 3:
+                continue
+            # if a coach resigns with a team then the structure of the sentence is different
+            # so we have to check it
+            if isinstance(deal.contents[2], element.Tag):
                 continue
             # serach explicitly for the keyword 'traded'
             if deal.contents[2].find("traded") > -1:
@@ -139,12 +144,13 @@ if __name__ == '__main__':
                     # set the date of the trade
                     trade.setDate(date)
                     # set the id of the trade
-                    trade.setTradeID("{}.{}".format(idx+1., trade.getDate().split(",")[-1]))
+                    trade.setTradeID("{}.{}".format(idx, trade.getDate().split(",")[-1].strip()))
                     trades.append(trade)
+                    idx += 1
 
     # create a json string of our scraped data
     json_data = json.dumps([trade.__dict__ for trade in trades])
 
     # storing the data in a json file
-    with  open("trades_2017.json", "w+") as file:
+    with  open("trades_2016.json", "w+") as file:
         json.dump(json_data, file)
