@@ -59,7 +59,7 @@ def parseTrade(array):
         index = str(array[i]).find("to the")
         if index > -1:
             assets_1 = parseAssets(array[2:i+1])
-            assets_2 = parseAssets(array[i+2:-1])
+            assets_2 = parseAssets(array[i+2:])
             return [Trade(array[1].contents[0], assets_2, assets_1), Trade(array[i+1].contents[0], assets_1, assets_2)]
     return []
 
@@ -130,7 +130,10 @@ def parseAssets(array):
     if len(array) == 1:
         # this means there is only a string
         # because players are extra entríes
-        assets = commaAndSplitting(array[0][8:-8])
+        if array[0][0:8] == " traded ":
+            assets = commaAndSplitting(array[0][8:-8])
+        else:
+            assets = commaAndSplitting(array[0][5:array[0].find(".")])
         # filter all cash considerations ??
         for asset in assets:
             if asset.find("cash considerations") != -1:
@@ -216,5 +219,5 @@ if __name__ == '__main__':
     json_data = json.dumps([trade.__dict__ for trade in trades])
 
     # storing the data in a json file
-    with  open("trades_2017_new.json", "w+") as file:
+    with  open("trades_2017.json", "w+") as file:
         json.dump(json_data, file)

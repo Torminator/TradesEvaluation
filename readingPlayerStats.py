@@ -1,4 +1,5 @@
 import json
+import csv
 import requests
 from bs4 import BeautifulSoup
 
@@ -64,16 +65,32 @@ if __name__ == "__main__":
         json_data = json.load(file)
         data = json.loads(json_data)
 
-        # iterate over all trades
-        size = len(data)
-        for idx, trade in enumerate(data):
-            # get the year for which we search the statistics for the players
-            last_year = int(trade["_Trade__date"].split(",")[-1]) - 1
-            # we call the function to return a new assets array with the stats for each playeer
-            trade["_Trade__team1_assets"] = getAssetsWithStats(trade["_Trade__team1_assets"], last_year)
-            trade["_Trade__team2_assets"] = getAssetsWithStats(trade["_Trade__team2_assets"], last_year)
-            # progress info
-            print("{}/{} trades completed".format(idx+1, size))
+    # the grades are given in string
+    # want to convert them to integers
+    gradeConversion = {"A+": 12, "A": 11, "A-": 10, "B+": 9, "B": 8, "B-": 7, "C+": 6, "C": 5, "C-": 4,
+                      "D+": 3, "D": 2, "D-": 1, "F": 0, "False": -1}
+
+    # open the csv file with the grades and read them
+    with open("grades_2017.csv", "r", newline="") as csvfile:
+        reader = csv.reader(csvfile, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        header = next(reader)
+        grades = [gradeConversion[row[5]] for row in reader]
+
+    # iterate over all trades
+    size = len(data)
+    for idx, trade in enumerate(data):
+        # get the year for which we search the statistics for the players
+        last_year = int(trade["_Trade__date"].split(",")[-1]) - 1
+        # we call the function to return a new assets array with the stats for each playeer
+        trade["_Trade__inflow"] = getAssetsWithStats(trade["_Trade__inflow"], last_year)
+        trade["_Trade__outflow"] = getAssetsWithStats(trade["_Trade__outflow"], last_year)
+        # insert the grades
+        trade["_Trade__grade"] = grades[idx]
+        # progress info
+        print("{}/{} trades completed".format(idx+1, size))
+
+    # filter the data if the grades is set to -1 (false in the csv)
+    data = [row for row in data if row["_Trade__grade"] != -1]
 
     # we save the data in a json
     json_data = json.dumps(data)
