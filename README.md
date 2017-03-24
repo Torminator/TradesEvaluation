@@ -1,9 +1,14 @@
 # TradesEvaluation
 A try to classify NBA trades
+  
+ScrapeTrades.py 
+ * gets all the trades from basketball-reference.com for a specific year
+ 
+readingTradesJSON.py
+ * reads the trades and writes part of it into a csv file
+  
+Add the grades per Hand in the grades_xxxx.csv
 
-Steps:
-  * get trade data (done)
-  * get player data (working on)
-  * get trade evaluations
-  * using these informations to estimate a model
-  * classify new trades
+readingPlayerStats.py
+ * gets all the stats of the players from basketball-reference.com 
+ * combine the grades with the stats
