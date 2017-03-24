@@ -160,7 +160,7 @@ def parseAssets(array):
                         start = 2
                     else:
                         start = 5
-                    cash_picks = commaAndSplitting(elem[start:-8])
+                    cash_picks = commaAndSplitting(elem[start:elem.find(".")])
                     for c_p in cash_picks:
                         if c_p.find("cash considerations") != -1:
                             continue
