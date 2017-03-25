@@ -7,7 +7,7 @@ class  Trade:
 
     # the class has an attribute for the name of both teams
     # and a list of assets which they traded
-    def __init__(self, team, inflow=None, outflow=None):
+    def __init__(self, team, date, inflow=None, outflow=None):
         self.__team = team
         if inflow is None:
             self.__inflow = []
@@ -17,8 +17,7 @@ class  Trade:
             self.__outflow = []
         else:
             self.__outflow = outflow
-        self.__date = None
-        self.__tradeid = None
+        self.__date = date
 
     def getTeam(self):
         return self.__team
@@ -35,9 +34,6 @@ class  Trade:
     def setDate(self, date):
         self.__date = date
 
-    def setTradeID(self, tradeid):
-        self.__tradeid = tradeid
-
     def addInflow(self, assets):
         for asset in assets:
             self.__inflow.append(asset)
@@ -47,8 +43,7 @@ class  Trade:
             self.__outflow.append(asset)
 
     def getJSON(self):
-        return {"tradeid": self.__tradeid,
-                "date": self.__date,
+        return {"date": self.__date,
                 "team": self.__team,
                 "inflow": self.__inflow,
                 "outflow": self.__outflow}
@@ -57,7 +52,7 @@ class  Trade:
         return self.__team1 + " - " + self.__team2
 
 # function gets an broken up html content
-def parseTrade(array):
+def parseTrade(array, date):
     # we can skip the first entry because it only contains 'the'
     for i in range(2, len(array)):
         # because every line has a typical form:
@@ -65,13 +60,15 @@ def parseTrade(array):
         # we only need the index of 'to the' to partition the sentence correctly
         index = str(array[i]).find("to the")
         if index > -1:
-            assets_1 = parseAssets(array[2:i+1])
-            assets_2 = parseAssets(array[i+2:])
-            return [Trade(array[1].contents[0], assets_2, assets_1), Trade(array[i+1].contents[0], assets_1, assets_2)]
+            year = date.split(",")[-1].strip()
+            assets_1 = parseAssets(array[2:i+1], year)
+            assets_2 = parseAssets(array[i+2:], year)
+            return [Trade(array[1].contents[0], date, assets_2, assets_1),
+                    Trade(array[i+1].contents[0], date, assets_1, assets_2)]
     return []
 
 # this function handles 3-teams trades
-def parse3TeamTrade(array):
+def parse3TeamTrade(array, date):
     # in a 3-team trade every transaction is listed, for example
     #   Atlanta Hawks traded Jeff Teague to the Indiana Pacers;
     # so we want to get the position of traded and to the
@@ -90,18 +87,19 @@ def parse3TeamTrade(array):
     for index in trade_index:
         t1_idx = isCreated(array[index[0]-1].contents[0], teams)
         t2_idx = isCreated(array[index[1]+1].contents[0], teams)
+        year = date.split(",")[-1].strip()
         # if it is not created then we need to create it
         if t1_idx == -1:
-            teams.append(Trade(array[index[0]-1].contents[0]))
+            teams.append(Trade(array[index[0]-1].contents[0], date))
             t1_idx = len(teams)-1
         # if it is not created then we need to create it
         if t2_idx == -1:
-            teams.append(Trade(array[index[1]+1].contents[0]))
+            teams.append(Trade(array[index[1]+1].contents[0], date))
             t2_idx = len(teams)-1
 
         # get the assets with our function parseAssets
         # we use the knowledge about the position to slice the array correctly
-        assets = parseAssets(array[index[0]:index[1]])
+        assets = parseAssets(array[index[0]:index[1]], year)
 
         # for the first team it loses the assets
         teams[t1_idx].addOutflow(assets)
@@ -117,7 +115,7 @@ def isCreated(teamname, teams):
 
     return -1
 
-def commaAndSplitting(text):
+def commaAndSplitting(text, year):
     # we know every concatenation is either done by ',' or 'and'
     # so we split the sentence accordingly
     text_split_comma = text.split(",")
@@ -125,27 +123,27 @@ def commaAndSplitting(text):
     if len(text_split_and) > 1:
         # if we find 'and' then we split again and the last entry of text_split_comma is now irrelevant(duplicate)
         text_split_comma.pop(-1)
-        and_dps = parseDraftPicks(text_split_and)
+        and_dps = parseDraftPicks(text_split_and, year)
         if and_dps:
-            return parseDraftPicks(text_split_comma) + and_dps
+            return parseDraftPicks(text_split_comma, year) + and_dps
         else:
-            return parseDraftPicks((text_split_comma))
+            return parseDraftPicks((text_split_comma, year))
     else:
-        return parseDraftPicks(text_split_comma)
+        return parseDraftPicks(text_split_comma, year)
 
-def parseDraftPicks(stringarr):
+def parseDraftPicks(stringarr, year):
     draft_picks = []
     for descr in stringarr:
         words = descr.split(" ")
         if "draft" in words:
             if "a" == words[0]:
-                draft_picks.append({"round": int(words[2][0]), "year": words[1]})
+                draft_picks.append({"round": int(words[2][0]), "year": year if words[1] == "future" else int(words[1])})
             else:
-                draft_picks.append({"round": int(words[3][0]), "year": words[2]})
+                draft_picks.append({"round": int(words[3][0]), "year": year if words[2] == "future" else int(words[2])})
 
     return draft_picks
 
-def parseAssets(array):
+def parseAssets(array, year):
     # these are all the fillwords used
     fillwords = [" traded ", " and ", " for ", ", ", " to the "]
     # the list to save all assets
@@ -154,9 +152,9 @@ def parseAssets(array):
         # this means there is only a string
         # because players are extra entríes
         if array[0][0:8] == " traded ":
-            assets = commaAndSplitting(array[0][8:-8])
+            assets = commaAndSplitting(array[0][8:-8], year)
         else:
-            assets = commaAndSplitting(array[0][5:array[0].find(".")])
+            assets = commaAndSplitting(array[0][5:array[0].find(".")], year)
 
     elif len(array) > 1:
         # again we can skip the first entry because it only states 'traded'
@@ -180,9 +178,9 @@ def parseAssets(array):
                         start = 2
                     else:
                         start = 5
-                    draft_picks = commaAndSplitting(elem[start:elem.find(".")])
+                    draft_picks = commaAndSplitting(elem[start:elem.find(".")], year)
                     if draft_picks:
-                        assets = assets + commaAndSplitting(elem[start:elem.find(".")])
+                        assets = assets + commaAndSplitting(elem[start:elem.find(".")], year)
 
 
     return assets
@@ -190,7 +188,7 @@ def parseAssets(array):
 if __name__ == '__main__':
 
     # use requests to get the website
-    r = requests.get("http://www.basketball-reference.com/leagues/NBA_2017_transactions.html")
+    r = requests.get("http://www.basketball-reference.com/leagues/NBA_2016_transactions.html")
 
     # use BeautifulSoup to parse the html
     soup = BeautifulSoup(r.content, "html5lib")
@@ -220,9 +218,9 @@ if __name__ == '__main__':
             if deal.contents[2].find("traded") > -1:
                 # call the parseTrade function and add the returning Trade object
                 if deal.contents[0].find("3-team trade") != -1:
-                    trade_parts = parse3TeamTrade(deal.contents)
+                    trade_parts = parse3TeamTrade(deal.contents, idx, date)
                 else:
-                    trade_parts = parseTrade(deal.contents)
+                    trade_parts = parseTrade(deal.contents, idx, date)
 
                 if not trade_parts:
                     print("ERROR")
@@ -239,5 +237,5 @@ if __name__ == '__main__':
     json_data = json.dumps([trade.getJSON() for trade in trades])
 
     # storing the data in a json file
-    with  open("trades_2017.json", "w+") as file:
+    with  open("trades_2016.json", "w+") as file:
         json.dump(json_data, file)
