@@ -46,6 +46,13 @@ class  Trade:
         for asset in assets:
             self.__outflow.append(asset)
 
+    def getJSON(self):
+        return {"tradeid": self.__tradeid,
+                "date": self.__date,
+                "team": self.__team,
+                "inflow": self.__inflow,
+                "outflow": self.__outflow}
+
     def __str__(self):
         return self.__team1 + " - " + self.__team2
 
@@ -118,9 +125,25 @@ def commaAndSplitting(text):
     if len(text_split_and) > 1:
         # if we find 'and' then we split again and the last entry of text_split_comma is now irrelevant(duplicate)
         text_split_comma.pop(-1)
-        return text_split_comma + text_split_and
+        and_dps = parseDraftPicks(text_split_and)
+        if and_dps:
+            return parseDraftPicks(text_split_comma) + and_dps
+        else:
+            return parseDraftPicks((text_split_comma))
     else:
-        return text_split_comma
+        return parseDraftPicks(text_split_comma)
+
+def parseDraftPicks(stringarr):
+    draft_picks = []
+    for descr in stringarr:
+        words = descr.split(" ")
+        if "draft" in words:
+            if "a" == words[0]:
+                draft_picks.append({"round": int(words[2][0]), "year": words[1]})
+            else:
+                draft_picks.append({"round": int(words[3][0]), "year": words[2]})
+
+    return draft_picks
 
 def parseAssets(array):
     # these are all the fillwords used
@@ -134,10 +157,7 @@ def parseAssets(array):
             assets = commaAndSplitting(array[0][8:-8])
         else:
             assets = commaAndSplitting(array[0][5:array[0].find(".")])
-        # filter all cash considerations ??
-        for asset in assets:
-            if asset.find("cash considerations") != -1:
-                assets.remove(asset)
+
     elif len(array) > 1:
         # again we can skip the first entry because it only states 'traded'
         for elem in array[1:]:
@@ -160,11 +180,11 @@ def parseAssets(array):
                         start = 2
                     else:
                         start = 5
-                    cash_picks = commaAndSplitting(elem[start:elem.find(".")])
-                    for c_p in cash_picks:
-                        if c_p.find("cash considerations") != -1:
-                            continue
-                        assets.append(c_p)
+                    draft_picks = commaAndSplitting(elem[start:elem.find(".")])
+                    if draft_picks:
+                        assets = assets + commaAndSplitting(elem[start:elem.find(".")])
+
+
     return assets
 
 if __name__ == '__main__':
@@ -216,7 +236,7 @@ if __name__ == '__main__':
                         idx += 1
 
     # create a json string of our scraped data
-    json_data = json.dumps([trade.__dict__ for trade in trades])
+    json_data = json.dumps([trade.getJSON() for trade in trades])
 
     # storing the data in a json file
     with  open("trades_2017.json", "w+") as file:
