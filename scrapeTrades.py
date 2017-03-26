@@ -135,10 +135,12 @@ def parseDraftPicks(stringarr, year):
     draft_picks = []
     for descr in stringarr:
         words = descr.split(" ")
-        if "draft" in words:
+        if "pick" in words:
             if "a" == words[0]:
                 draft_picks.append({"draft_pick":{"round": int(words[2][0]),
                                     "year": year if words[1] == "future" else int(words[1])}})
+            elif "Future" == words[0]:
+                draft_picks.append({"draft_pick": {"round": int(words[1][0]), "year": year }})
             else:
                 draft_picks.append({"draft_pick":{"round": int(words[3][0]),
                                     "year": year if words[2] == "future" else int(words[2])}})
