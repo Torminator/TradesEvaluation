@@ -7,7 +7,7 @@ ScrapeTrades.py
 readingTradesJSON.py
  * reads the trades and writes part of it into a csv file
   
-Add the grades per Hand in the grades_xxxx.csv
+Add the grades by hand in the grades_xxxx.csv
 
 readingPlayerStats.py
  * gets all the stats of the players from basketball-reference.com 
