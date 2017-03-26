@@ -137,9 +137,11 @@ def parseDraftPicks(stringarr, year):
         words = descr.split(" ")
         if "draft" in words:
             if "a" == words[0]:
-                draft_picks.append({"round": int(words[2][0]), "year": year if words[1] == "future" else int(words[1])})
+                draft_picks.append({"draft_pick":{"round": int(words[2][0]),
+                                    "year": year if words[1] == "future" else int(words[1])}})
             else:
-                draft_picks.append({"round": int(words[3][0]), "year": year if words[2] == "future" else int(words[2])})
+                draft_picks.append({"draft_pick":{"round": int(words[3][0]),
+                                    "year": year if words[2] == "future" else int(words[2])}})
 
     return draft_picks
 
@@ -167,7 +169,7 @@ def parseAssets(array, year):
                 # so we can asked if the element is a Tag
                 # then the Name is saved in elem.contents[0]
                 if isinstance(elem, element.Tag):
-                    assets.append({"playername": elem.contents[0], "link": elem["href"]})
+                    assets.append({"player":{"playername": elem.contents[0], "link": elem["href"]}})
                 else:
                     # we know it is not a player or a fillword,
                     # some the element holds information about draft picks or cash considerations
@@ -199,7 +201,6 @@ if __name__ == '__main__':
     days = contents.find_all("li")
 
     trades = []
-    idx = 1
     for day in days:
         # find the actual date
         date = day.find("span").contents[0]
@@ -218,20 +219,15 @@ if __name__ == '__main__':
             if deal.contents[2].find("traded") > -1:
                 # call the parseTrade function and add the returning Trade object
                 if deal.contents[0].find("3-team trade") != -1:
-                    trade_parts = parse3TeamTrade(deal.contents, idx, date)
+                    trade_parts = parse3TeamTrade(deal.contents, date)
                 else:
-                    trade_parts = parseTrade(deal.contents, idx, date)
+                    trade_parts = parseTrade(deal.contents,date)
 
                 if not trade_parts:
                     print("ERROR")
                 else:
-                    # set the date of the trade
                     for trade in trade_parts:
-                        trade.setDate(date)
-                        # set the id of the trade
-                        trade.setTradeID("{}.{}".format(idx, trade.getDate().split(",")[-1].strip()))
                         trades.append(trade)
-                        idx += 1
 
     # create a json string of our scraped data
     json_data = json.dumps([trade.getJSON() for trade in trades])
