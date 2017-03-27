@@ -71,7 +71,7 @@ if __name__ == "__main__":
                       "D+": 3, "D": 2, "D-": 1, "F": 0, "False": -1}
 
     # open the csv file with the grades and read them
-    with open("grades_2017.csv", "r", newline="") as csvfile:
+    with open("grades/grades_2017.csv", "r", newline="") as csvfile:
         reader = csv.reader(csvfile, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         header = next(reader)
         grades = [gradeConversion[row[5]] for row in reader]

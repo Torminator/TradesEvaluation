@@ -1,0 +1,78 @@
+Date;Team;Inflow;Outflow;Grades(source: ESPN)
+February 23, 2017;Chicago Bulls;Joffrey Lauvergne;Taj Gibson;C
+February 23, 2017;Oklahoma City Thunder;Taj Gibson;Joffrey Lauvergne;B
+February 23, 2017;Phoenix Suns;Jared Sullinger;P.J. Tucker;C
+February 23, 2017;Toronto Raptors;P.J. Tucker;Jared Sullinger;A
+February 23, 2017;Atlanta Hawks;a 2017 2nd round draft pick;Cenk Akyol;B-
+February 23, 2017;Phoenix Suns;Cenk Akyol;a 2017 2nd round draft pick;B
+February 23, 2017;Houston Rockets;Marcelo Huertas;Tyler Ennis;C+
+February 23, 2017;Los Angeles Lakers;Tyler Ennis;Marcelo Huertas;C+
+February 23, 2017;Brooklyn Nets;K.J. McDaniels;NA;B
+February 23, 2017;Houston Rockets;NA;K.J. McDaniels;B
+February 23, 2017;Denver Nuggets;Roy Hibbert;a 2019 2nd round draft pick;A
+February 23, 2017;Milwaukee Bucks;a 2019 2nd round draft pick;Roy Hibbert;B
+February 23, 2017;Dallas Mavericks;Nerlens Noel;Justin Anderson;B+
+February 23, 2017;Philadelphia 76ers;Justin Anderson;Nerlens Noel;B-
+February 23, 2017;Houston Rockets;Lou Williams;Corey Brewer;A-
+February 23, 2017;Los Angeles Lakers;Corey Brewer;Lou Williams;B
+February 22, 2017;Atlanta Hawks;Ersan Ilyasova;Tiago Splitter;B
+February 22, 2017;Philadelphia 76ers;Tiago Splitter;Ersan Ilyasova;B+
+February 22, 2017;Brooklyn Nets;Andrew Nicholson;Bojan Bogdanovic;B+
+February 22, 2017;Washington Wizards;Bojan Bogdanovic;Andrew Nicholson;C
+February 20, 2017;New Orleans Pelicans;Omri Casspi;Tyreke Evans;A-
+February 20, 2017;Sacramento Kings;Tyreke Evans;Omri Casspi;D
+February 14, 2017;Orlando Magic;Terrence Ross;Serge Ibaka;B
+February 14, 2017;Toronto Raptors;Serge Ibaka;Terrence Ross;A
+February 13, 2017;Denver Nuggets;Mason Plumlee;Jusuf Nurkic;C-
+February 13, 2017;Portland Trail Blazers;Jusuf Nurkic;Mason Plumlee;B+
+February 13, 2017;Charlotte Hornets;Chris Andersen;a 2017 2nd round draft pick;B
+February 13, 2017;Cleveland Cavaliers;a 2017 2nd round draft pick;Chris Andersen;A
+February 2, 2017;Charlotte Hornets;Miles Plumlee;Spencer Hawes;D
+February 2, 2017;Milwaukee Bucks;Spencer Hawes;Miles Plumlee;A
+January 18, 2017;Atlanta Hawks;Cenk Akyol;Mo Williams;False
+January 18, 2017;Denver Nuggets;Mo Williams;Cenk Akyol;False
+January 7, 2017;Atlanta Hawks;Mike Dunleavy;Kyle Korver;C+
+January 7, 2017;Cleveland Cavaliers;Kyle Korver;Mike Dunleavy;A
+January 6, 2017;Cleveland Cavaliers;a 2018 1st round draft pick;a 2017 1st round draft pick;False
+January 6, 2017;Portland Trail Blazers;a 2017 1st round draft pick;a 2018 1st round draft pick;False
+November 1, 2016;Oklahoma City Thunder;Jerami Grant;Ersan Ilyasova;B-
+November 1, 2016;Philadelphia 76ers;Ersan Ilyasova;Jerami Grant;B
+October 17, 2016;Chicago Bulls;Michael Carter-Williams;Tony Snell;B
+October 17, 2016;Milwaukee Bucks;Tony Snell;Michael Carter-Williams;C-
+September 22, 2016;Houston Rockets;Tyler Ennis;Michael Beasley;B-
+September 22, 2016;Milwaukee Bucks;Michael Beasley;Tyler Ennis;C
+August 30, 2016;Denver Nuggets;a 2017 2nd round draft pick ;Joffrey Lauvergne;A-
+August 30, 2016;Oklahoma City Thunder;Joffrey Lauvergne;a 2017 2nd round draft pick ;C-
+August 26, 2016;Philadelphia 76ers;Tibor Pleiss;Kendall Marshall;A
+August 26, 2016;Utah Jazz;Kendall Marshall;Tibor Pleiss;C
+July 15, 2016;Los Angeles Clippers;Devyn Marble;C.J. Wilcox;B
+July 15, 2016;Orlando Magic;C.J. Wilcox;Devyn Marble;C
+July 15, 2016;Cleveland Cavaliers;Chukwudiebere Maduabum;Sasha Kaun;False
+July 15, 2016;Philadelphia 76ers;Sasha Kaun;Chukwudiebere Maduabum;False
+July 12, 2016;Charlotte Hornets;NA;Troy Daniels;B-
+July 12, 2016;Memphis Grizzlies;Troy Daniels;NA;B
+July 10, 2016;Miami Heat;Luke Babbitt; a 2018 2nd round draft pick;B
+July 10, 2016;New Orleans Pelicans; a 2018 2nd round draft pick;Luke Babbitt;B+
+July 8, 2016;San Antonio Spurs;Olivier Hanlan;Boris Diaw;B-
+July 8, 2016;Utah Jazz;Boris Diaw;Olivier Hanlan;A
+July 7, 2016;Charlotte Hornets;Marco Belinelli;Malachi Richardson;D-
+July 7, 2016;Sacramento Kings;Malachi Richardson;Marco Belinelli;A
+July 7, 2016;Dallas Mavericks;Andrew Bogut;a future 2nd round draft pick;B
+July 7, 2016;Golden State Warriors;a future 2nd round draft pick;Andrew Bogut;A
+July 7, 2016;Brooklyn Nets;Caris LeVert;Thaddeus Young;B
+July 7, 2016;Indiana Pacers;Thaddeus Young;Caris LeVert;B+
+July 7, 2016;Orlando Magic;NA;Shabazz Napier;C
+July 7, 2016;Portland Trail Blazers;Shabazz Napier;NA;B
+July 7, 2016;Atlanta Hawks;Taurean Prince;Jeff Teague;B-
+July 7, 2016;Indiana Pacers;Jeff Teague;George Hill;C
+July 7, 2016;Utah Jazz;George Hill;Taurean Prince;B+
+July 7, 2016;Dallas Mavericks;Stanko Barac;Jeremy Evans;C
+July 7, 2016;Indiana Pacers;Jeremy Evans;Stanko Barac;B+
+July 7, 2016;Utah Jazz;a 2021 2nd round draft pick;Trey Burke;C+
+July 7, 2016;Washington Wizards;Trey Burke;a 2021 2nd round draft pick;B
+July 7, 2016;Chicago Bulls;Ater Majok;Jose Calderon;B
+July 7, 2016;Los Angeles Lakers;Jose Calderon;Ater Majok;A
+July 7, 2016;Chicago Bulls;Albert Miralles;Mike Dunleavy;C
+July 7, 2016;Cleveland Cavaliers;Mike Dunleavy;Albert Miralles;B
+July 7, 2016;Cleveland Cavaliers;Albert Miralles;Matthew Dellavedova;A
+July 7, 2016;Milwaukee Bucks;Matthew Dellavedova;Albert Miralles;B

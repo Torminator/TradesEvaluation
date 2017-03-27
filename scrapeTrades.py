@@ -1,4 +1,5 @@
 import requests
+import datetime
 import json
 from bs4 import BeautifulSoup, element
 
@@ -17,7 +18,9 @@ class  Trade:
             self.__outflow = []
         else:
             self.__outflow = outflow
-        self.__date = date
+
+        self.__date = datetime.datetime.strptime(date, "%B %d, %Y").date()
+        self.__season = self.__date.year+1 if self.__date.month > 6 else self.__date.year
 
     def getTeam(self):
         return self.__team
@@ -43,8 +46,9 @@ class  Trade:
             self.__outflow.append(asset)
 
     def getJSON(self):
-        return {"date": self.__date,
+        return {"date": self.__date.strftime("%d-%m-%Y"),
                 "team": self.__team,
+                "season": self.__season,
                 "inflow": self.__inflow,
                 "outflow": self.__outflow}
 
@@ -192,7 +196,7 @@ def parseAssets(array, year):
 if __name__ == '__main__':
 
     # use requests to get the website
-    r = requests.get("http://www.basketball-reference.com/leagues/NBA_2016_transactions.html")
+    r = requests.get("http://www.basketball-reference.com/leagues/NBA_2017_transactions.html")
 
     # use BeautifulSoup to parse the html
     soup = BeautifulSoup(r.content, "html5lib")
@@ -235,5 +239,5 @@ if __name__ == '__main__':
     json_data = json.dumps([trade.getJSON() for trade in trades])
 
     # storing the data in a json file
-    with  open("trades_2016.json", "w+") as file:
+    with  open("trades_2017.json", "w+") as file:
         json.dump(json_data, file)
