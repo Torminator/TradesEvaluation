@@ -103,8 +103,10 @@ def parse3TeamTrade(array, date):
 
         # get the assets with our function parseAssets
         # we use the knowledge about the position to slice the array correctly
-        assets = parseAssets(array[index[0]:index[1]], year)
-
+        if index[0] < index[1]:
+            assets = parseAssets(array[index[0]:index[1]], year)
+        else:
+            assets = parseAssets(array[index[0]:index[1]+1], year)
         # for the first team it loses the assets
         teams[t1_idx].addOutflow(assets)
         # and the second team receives the assets
@@ -196,7 +198,7 @@ def parseAssets(array, year):
 if __name__ == '__main__':
 
     # use requests to get the website
-    r = requests.get("http://www.basketball-reference.com/leagues/NBA_2017_transactions.html")
+    r = requests.get("http://www.basketball-reference.com/leagues/NBA_2015_transactions.html")
 
     # use BeautifulSoup to parse the html
     soup = BeautifulSoup(r.content, "html5lib")
@@ -239,5 +241,5 @@ if __name__ == '__main__':
     json_data = json.dumps([trade.getJSON() for trade in trades])
 
     # storing the data in a json file
-    with  open("trades_2017.json", "w+") as file:
+    with  open("trades_2015.json", "w+") as file:
         json.dump(json_data, file)
