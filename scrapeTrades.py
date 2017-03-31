@@ -133,7 +133,7 @@ def commaAndSplitting(text, year):
         if and_dps:
             return parseDraftPicks(text_split_comma, year) + and_dps
         else:
-            return parseDraftPicks((text_split_comma, year))
+            return parseDraftPicks(text_split_comma, year)
     else:
         return parseDraftPicks(text_split_comma, year)
 
@@ -198,7 +198,7 @@ def parseAssets(array, year):
 if __name__ == '__main__':
 
     # use requests to get the website
-    r = requests.get("http://www.basketball-reference.com/leagues/NBA_2015_transactions.html")
+    r = requests.get("http://www.basketball-reference.com/leagues/NBA_2013_transactions.html")
 
     # use BeautifulSoup to parse the html
     soup = BeautifulSoup(r.content, "html5lib")
@@ -241,5 +241,5 @@ if __name__ == '__main__':
     json_data = json.dumps([trade.getJSON() for trade in trades])
 
     # storing the data in a json file
-    with  open("trades_2015.json", "w+") as file:
+    with  open("trades/trades_2013.json", "w+") as file:
         json.dump(json_data, file)
