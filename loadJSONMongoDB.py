@@ -7,7 +7,7 @@ client = MongoClient("localhost", 27017)
 db = client.trades
 collection = db.trades
 
-with open("trades/trades_2014.json", "r") as file:
+with open("trades/trades_2017.json", "r") as file:
     json_data = json.load(file)
     data = json.loads(json_data)
 
@@ -17,12 +17,14 @@ gradeConversion = {"A+": 12, "A": 11, "A-": 10, "B+": 9, "B": 8, "B-": 7, "C+": 
                    "D+": 3, "D": 2, "D-": 1, "F": 0, "False": -1}
 
 # open the csv file with the grades and read them
-with open("grades/grades_2014.csv", "r", newline="") as csvfile:
+with open("grades/grades_2017.csv", "r", newline="") as csvfile:
     reader = csv.reader(csvfile, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     header = next(reader)
     grades = [gradeConversion[row[4].strip()] for row in reader]
 
 for idx,trade in enumerate(data):
+    if trade["team"] == "Charlotte Bobcats":
+        trade["team"] = "Charlotte Hornets"
     trade["grade"] = grades[idx]
 
 # filter the data if the grades is set to -1 (false in the csv)

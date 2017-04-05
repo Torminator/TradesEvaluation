@@ -71,7 +71,7 @@ def parseTrade(array, date):
                     Trade(array[i+1].contents[0], date, assets_1, assets_2)]
     return []
 
-# this function handles 3-teams trades
+# this function handles 3-teams trades or any n-team trades
 def parse3TeamTrade(array, date):
     # in a 3-team trade every transaction is listed, for example
     #   Atlanta Hawks traded Jeff Teague to the Indiana Pacers;
@@ -226,7 +226,7 @@ if __name__ == '__main__':
             # serach explicitly for the keyword 'traded'
             if deal.contents[2].find("traded") > -1:
                 # call the parseTrade function and add the returning Trade object
-                if deal.contents[0].find("3-team trade") != -1:
+                if deal.contents[0].find("-team trade") != -1:
                     trade_parts = parse3TeamTrade(deal.contents, date)
                 else:
                     trade_parts = parseTrade(deal.contents,date)

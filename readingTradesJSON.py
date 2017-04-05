@@ -5,7 +5,7 @@ with open("trades/trades_2013.json", "r") as file:
     json_data = json.load(file)
     data = json.loads(json_data)
 
-with open("trades_overview_2013.csv", "w+", newline="") as csvfile:
+with open("trades_overview_2013_new.csv", "w+", newline="") as csvfile:
     writer = csv.writer(csvfile, delimiter=";", quotechar='"', quoting=csv.QUOTE_MINIMAL)
     writer.writerow(["Date", "Team", "Inflow", "Outflow"])
     for row in data:
